@@ -1,0 +1,11 @@
+=== Agent Install Log ===
+=== Agent Compile Log ===
+=== Agent Error Log ===
+Traceback (most recent call last):
+  File "main.py", line 32, in <module>
+    actions = agent(observation, None)
+  File "/Users/thaekehekkenberg/Desktop/simple/agent.py", line 58, in agent
+    elif city_with_least_fuel(player).fuel < 50:
+  File "/Users/thaekehekkenberg/Desktop/simple/agent.py", line 133, in city_with_least_fuel
+    for k, city in player.cities:
+ValueError: too many values to unpack (expected 2)
