@@ -1,9 +1,0 @@
-=== Agent Install Log ===
-=== Agent Compile Log ===
-=== Agent Error Log ===
-Traceback (most recent call last):
-  File "main.py", line 32, in <module>
-    actions = agent(observation, None)
-  File "/Users/thaekehekkenberg/Desktop/simple/agent.py", line 48, in agent
-    empty_space_next_to_city_tile
-NameError: name 'empty_space_next_to_city_tile' is not defined
