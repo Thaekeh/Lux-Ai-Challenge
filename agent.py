@@ -1,4 +1,5 @@
 import math
+import random
 import sys
 
 from lux import annotate
@@ -51,13 +52,21 @@ def agent(observation, configuration):
             lowest_fuel_city = city_with_least_fuel(player)
             closest_dist = math.inf
             closest_resource_tile = None
+            if unit_shares_position_with_other_units(player, unit):
+                random_direction = get_random_direction()
+                destination = unit.pos.translate(
+                    random_direction, 1)
+                actions.append(
+                    unit.move(random_direction))
 
-            if (lowest_fuel_city.fuel < 50 and unit.get_cargo_space_left() < 20):
+            if lowest_fuel_city.fuel < 200 and unit.get_cargo_space_left() < 20:
                 # if we have resources and a city needs it
                 actions.append(annotate.sidetext(
                     'going to city with lowest fuel - Step 1'))
                 closest_city_tile = closest_city_tile_of_city(
                     lowest_fuel_city, unit)
+                actions.append(annotate.x(closest_city_tile.pos.x,
+                                          closest_city_tile.pos.y))
                 actions.append(
                     unit.move(unit.pos.direction_to(
                         closest_city_tile.pos))
@@ -75,17 +84,6 @@ def agent(observation, configuration):
                     destination = closest_empty_tile(empty_tiles, unit)
                     actions.append(
                         unit.move(unit.pos.direction_to(destination.pos)))
-
-                # old code
-
-                # closest_city_tile = get_closest_city_tile(player, unit)
-                # empty_cell = get_empty_space_next_to_city_tile(
-                #     game_state, closest_city_tile)
-                # if unit.can_build(game_map):
-                #     actions.append(unit.build_city())
-                # else:
-                #     actions.append(
-                #         unit.move(unit.pos.direction_to(empty_cell.pos)))
 
             elif unit.get_cargo_space_left() > 0:
                 # if the unit is a worker and we have space in cargo, lets find the nearest resource tile and try to mine it
@@ -189,3 +187,16 @@ def closest_empty_tile(empty_cells, unit):
             closest_dist = dist
             closest_empty_cell = cell
     return closest_empty_cell
+
+
+def unit_shares_position_with_other_units(player, unit):
+    for temp_unit in player.units:
+        if temp_unit == unit:
+            continue
+        if temp_unit.pos == unit.pos:
+            return True
+    return False
+
+
+def get_random_direction():
+    return random.choice(['s', 'n', 'w', 'e'])
